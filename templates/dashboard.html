@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mt-5">
+    <h2>🎁 Мої списки бажань</h2>
+    <hr>
+    
+    <div class="row mt-4">
+        {% for wishlist in wishlists %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title mb-0">{{ wishlist.title }}</h5>
+                        
+                        <button onclick="copyLink('{{ request.scheme }}://{{ request.get_host }}{% url 'wishlist_detail' wishlist.pk %}', this)" class="btn btn-sm btn-light border text-muted">
+                        🔗 Копіювати
+                        </button>
+                    </div>
+                    
+                    <p class="text-bright small mb-3">Створено: {{ wishlist.created_at|date:"d.m.Y" }}</p>
+                    <a href="{% url 'wishlist_detail' wishlist.pk %}" class="btn btn-outline-primary btn-sm">Відкрити список</a>
+                </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center text-muted">
+                <p>У вас ще немає жодного вішліста.</p>
+                <a href="{% url 'create_wishlist' %}" class="btn btn-primary mt-3">+ Створити перший список</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<script>
+    function copyLink(url, button) {
+        navigator.clipboard.writeText(url).then(function() {
+            let originalText = button.innerHTML;
+            
+            button.innerHTML = '✅ Скопійовано!';
+            button.classList.add('text-success');
+            
+            setTimeout(function() {
+                button.innerHTML = originalText;
+                button.classList.remove('text-success');
+            }, 2000);
+            
+        }).catch(function(error) {
+            console.error('Помилка копіювання', error);
+        });
+    }
+</script>
+{% endblock %}

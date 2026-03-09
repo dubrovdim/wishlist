@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="card-title mb-4">Додати подарунок у список "{{ wishlist.title }}"</h3>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Назва подарунка *</label>
+                        {{ form.name }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Посилання на магазин</label>
+                        {{ form.shop_url }}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted">Орієнтовна ціна</label>
+                            {{ form.price }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Короткий опис або побажання</label>
+                        {{ form.description }}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success">Додати подарунок</button>
+                    <a href="{% url 'wishlist_detail' wishlist.pk %}" class="btn btn-link text-muted">Скасувати</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

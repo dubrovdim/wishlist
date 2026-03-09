@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="card-title mb-4">Створення нового списку</h3>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Назва вішліста</label>
+                        {{ form.title }}
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Зберегти список</button>
+                    <a href="{% url 'dashboard' %}" class="btn btn-link w-100 text-center mt-2">Скасувати</a>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

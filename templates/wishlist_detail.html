@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>🎁 {{ wishlist.title }}</h2>
+        <div>
+            {% if request.user == wishlist.owner %}
+                <a href="{% url 'add_item' wishlist.pk %}" class="btn btn-success">+ Додати подарунок</a>
+            {% endif %}
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary ms-2">Назад</a>
+        </div>
+    </div>
+    
+    <p class="mb-4" style="color: var(--text-muted)">Автор: <b class="text-white">{{ wishlist.owner.username }}</b></p>
+    
+    <div class="row">
+        {% for item in wishlist.items.all %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.name }}</h5>
+                        {% if item.price %}
+                            <h6 class="card-subtitle mb-3 text-success">{{ item.price }} грн</h6>
+                        {% endif %}
+                        {% if item.description %}
+                            <p class="card-text small">{{ item.description }}</p>
+                        {% endif %}
+                    </div>
+    
+                    <div class="card-footer pb-3">
+                        {% if item.shop_url %}
+                            <a href="{{ item.shop_url }}" target="_blank" class="btn btn-outline-primary btn-sm w-100 mb-2">
+                                🔗 Перейти в магазин
+                            </a>
+                        {% endif %}
+                        
+                        {% if not item.is_reserved %}
+                            <a href="{% url 'reserve_item' item.id %}" class="btn btn-success btn-sm w-100">
+                                🎁 Забронювати
+                            </a>
+                        {% else %}
+                            <button class="btn btn-secondary btn-sm w-100" disabled>
+                                Зайнято: {{ item.reserved_by }}
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+        {% empty %}
+            <div class="col-12 text-center mt-5">
+                <div class="alert alert-light border text-muted">
+                    У цьому списку ще немає подарунків. 
+                    {% if request.user == wishlist.owner %}
+                        Час додати щось бажане!
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
