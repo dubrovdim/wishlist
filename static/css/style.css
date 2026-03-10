@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=B612:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+/* Підключаємо класичний шрифт Vollkorn */
+@import url('https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 :root {
     --bg-dark: #0b0f1a;      /* Ще глибший темний */
@@ -11,7 +12,7 @@
 }
 
 * {
-    font-family: 'B612', sans-serif !important;
+    font-family: 'Vollkorn', serif !important;
 }
 
 body {
@@ -83,4 +84,48 @@ h1, h2, h3, .card-title {
 
 .text-success {
     color: #4ade80 !important; /* Яскравіший зелений для ціни */
+}
+.form-control {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-main) !important;
+    border-radius: 12px;
+    padding: 10px 15px;
+}
+
+/* Ефект підсвічування поля, коли ти в ньому друкуєш */
+.form-control:focus {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25) !important;
+}
+
+/* Колір тексту-підказки (placeholder) */
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* 2. Робимо текст над полями (Назва, Ціна) світлим і чітким */
+.form-label, label {
+    color: var(--text-bright) !important;
+    font-weight: 600;
+}
+
+/* 3. Виправляємо різку білу рамку, коли списки порожні */
+.alert-light {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    border: 1px dashed rgba(255, 255, 255, 0.15) !important;
+    color: var(--text-bright) !important;
+    border-radius: 20px;
+}
+
+/* 4. Робимо посилання "Скасувати" видимим */
+a.text-muted {
+    color: #cbd5e1 !important; /* Світло-сірий */
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a.text-muted:hover {
+    color: var(--accent) !important;
 }

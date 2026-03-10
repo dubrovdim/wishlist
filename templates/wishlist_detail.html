@@ -18,8 +18,26 @@
         {% for item in wishlist.items.all %}
             <div class="col-md-4 mb-4">
                 <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ item.name }}</h5>
+                    
+                    {% if item.image %}
+                        <img src="{{ item.image.url }}" alt="{{ item.name }}" class="card-img-top" style="height: 250px; object-fit: cover; border-top-left-radius: 24px; border-top-right-radius: 24px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    {% else %}
+                        <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 250px; background: rgba(255,255,255,0.02); border-top-left-radius: 24px; border-top-right-radius: 24px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <span style="font-size: 4rem; opacity: 0.3;">🎁</span>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="card-body position-relative">
+                        
+                        {% if request.user == wishlist.owner %}
+                            <form action="{% url 'delete_item' item.id %}" method="post" class="position-absolute" style="top: 15px; right: 15px;" onsubmit="return confirm('Ви точно хочете видалити цей подарунок?');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-outline-danger border-0" title="Видалити">🗑️</button>
+                            </form>
+                        {% endif %}
+
+                        <h5 class="card-title w-75">{{ item.name }}</h5>
+                        
                         {% if item.price %}
                             <h6 class="card-subtitle mb-3 text-success">{{ item.price }} грн</h6>
                         {% endif %}

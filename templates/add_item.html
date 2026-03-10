@@ -7,7 +7,7 @@
             <div class="card-body">
                 <h3 class="card-title mb-4">Додати подарунок у список "{{ wishlist.title }}"</h3>
                 
-                <form method="post">
+                <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     
                     <div class="mb-3">
@@ -30,6 +30,11 @@
                     <div class="mb-3">
                         <label class="form-label text-muted">Короткий опис або побажання</label>
                         {{ form.description }}
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label text-muted">Або завантажте фото (якщо є)</label>
+                        {{ form.image }}
                     </div>
                     
                     <button type="submit" class="btn btn-success">Додати подарунок</button>

@@ -10,7 +10,7 @@
 <body>
     <nav class="navbar navbar-expand-lg sticky-top mb-4">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">🎁 Мій Вішліст</a>
+            <a class="navbar-brand" href="{% url 'home' %}">Мій Вішліст</a>
             <div>
                 {% if user.is_authenticated %}
                     <span class="me-3">Привіт, <b>{{ user.username }}</b>!</span>

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="bg-glow"></div> <div class="container">
@@ -8,7 +9,7 @@
                 Створюй <span class="gradient-text">вішлісти</span><br>
                 нового покоління
             </h1>
-            
+   
             <div class="hero-desc mb-5">
                 <p class="fs-5 text-main">
                     Досить отримувати непотрібні подарунки. Зберігай свої мрії у стильному просторі та ділися ними з близькими.
@@ -25,10 +26,18 @@
             </div>
         </div>
         
-        <div class="col-lg-5 d-none d-lg-block">
-            <div class="p-5 text-center" style="background: rgba(255,255,255,0.03); border-radius: 30px; border: 1px dashed rgba(255,255,255,0.2)">
-                <span class="display-1">🎁</span>
-                <p class="mt-3 text-white">Тут буде твій ідеальний подарунок</p>
+        <div class="col-lg-5 d-none d-lg-block position-relative">
+            
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 280px; height: 280px; background: var(--accent-gradient); border-radius: 50%; filter: blur(80px); opacity: 0.5;"></div>
+            
+            <div class="position-relative shadow-lg" style="height: 400px; background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 32px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden;">
+                
+                <div style="position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.15) 2px, transparent 2px); background-size: 24px 24px; z-index: 1;"></div>
+                
+                <div class="position-absolute top-50 start-50 translate-middle text-center w-100" style="z-index: 2;">
+                    <img src="{% static 'images/gift.png' %}" alt="Gift Icon" style="width: 220px; height: auto; filter: invert(1) drop-shadow(0 0 20px rgba(255,255,255,0.3)); opacity: 0.85;">
+                </div> 
+                
             </div>
         </div>
     </div>
