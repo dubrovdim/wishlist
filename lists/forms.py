@@ -1,5 +1,7 @@
 from django import forms
 from .models import Wishlist, Item
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 class WishlistForm(forms.ModelForm):
     class Meta:
@@ -25,3 +27,13 @@ class ItemForm(forms.ModelForm):
             # Додали віджет для файлу
             'image': forms.FileInput(attrs={'class': 'form-control'}),
         }
+
+class SimpleRegistrationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.help_text = ''

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.forms import UserCreationForm
+from .forms import SimpleRegistrationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from .models import Wishlist, Item
@@ -17,13 +17,13 @@ def home(request):
 # Реєстрація
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SimpleRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect('home') # Повертаємо на головну сторінку
     else:
-        form = UserCreationForm()
+        form = SimpleRegistrationForm()
     
     return render(request, 'register.html', {'form': form})
 
