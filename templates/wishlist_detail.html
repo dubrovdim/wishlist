@@ -20,7 +20,7 @@
                 <div class="card shadow-sm h-100">
                     
                     {% if item.image %}
-                        <img src="{{ item.image.url }}" alt="{{ item.name }}" class="card-img-top" style="height: 250px; object-fit: cover; border-top-left-radius: 24px; border-top-right-radius: 24px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <img src="{{ item.image.url }}" alt="{{ item.name }}" class="card-img-top" style="width: 100%; height: 250px; object-fit: contain; object-position: center; background-color: #ffffff; border-bottom: 1px solid rgba(255,255,255,0.05);">
                     {% else %}
                         <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 250px; background: rgba(255,255,255,0.02); border-top-left-radius: 24px; border-top-right-radius: 24px; border-bottom: 1px solid rgba(255,255,255,0.05);">
                             <span style="font-size: 4rem; opacity: 0.3;">🎁</span>

@@ -7,6 +7,8 @@ from .forms import WishlistForm, ItemForm
 import requests
 from bs4 import BeautifulSoup
 from django.core.files.base import ContentFile
+from io import BytesIO
+from PIL import Image
 
 # Головна сторінка
 def home(request):
@@ -78,7 +80,18 @@ def add_item(request, pk):
                             img_response = requests.get(img_url, headers=headers, timeout=5)
                             
                             if img_response.status_code == 200:
-                                item.image.save('product.jpg', ContentFile(img_response.content), save=False)
+                                img = Image.open(BytesIO(img_response.content))
+                                
+                                if img.mode != 'RGB':
+                                    img = img.convert('RGB')
+                                    
+                                img.thumbnail((600, 600))
+                                
+                        
+                                buffer = BytesIO()
+                                img.save(buffer, format="JPEG", quality=80)
+                                    
+                                item.image.save('product.jpg', ContentFile(buffer.getvalue()), save=False)
                 except Exception:
                     pass
             
