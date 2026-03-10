@@ -30,6 +30,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
+    'cloudinary',
     'lists',
 ]
 
@@ -106,4 +108,11 @@ LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = '/'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# ТУТ ВСТАВ СВОЇ ДАНІ З САЙТУ CLOUDINARY
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dwko3z7kh',
+    'API_KEY': '182554211679238',
+    'API_SECRET': 'gRDHVHmD0uWJFTXSOJaG8cYIHFE'
+}
