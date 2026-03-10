@@ -108,9 +108,16 @@ LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = '/'
 
 MEDIA_URL = '/media/'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# ТУТ ВСТАВ СВОЇ ДАНІ З САЙТУ CLOUDINARY
+# Новий формат для Django 5.0+ та 6.0
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dwko3z7kh',
     'API_KEY': '182554211679238',
