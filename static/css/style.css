@@ -1,5 +1,5 @@
-/* Підключаємо класичний шрифт Vollkorn */
-@import url('https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+/* Підключаємо класичний шрифт Nunito */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
 
 :root {
     --bg-dark: #0b0f1a;      /* Ще глибший темний */
@@ -12,7 +12,7 @@
 }
 
 * {
-    font-family: 'Vollkorn', serif !important;
+    font-family: 'Nunito', sans-serif !important;
 }
 
 body {
@@ -34,6 +34,8 @@ body {
     overflow: hidden;
     transition: all 0.3s ease;
     background-color: #1c1c28;
+    position: relative;
+    cursor: pointer;
 }
 
 .card:hover {
@@ -136,6 +138,7 @@ a.text-muted:hover {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     transition: 0.3s;
+    position: relative; z-index: 2;
 }
 
 .btn-copy:hover {
