@@ -18,14 +18,14 @@ class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
         # Додали поле 'image' в список
-        fields = ['name', 'description', 'price', 'shop_url', 'image'] 
+        fields = ['name', 'description', 'price', 'shop_url', 'image', 'currency'] 
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Наприклад: Навушники Sony'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Колір чорний, бажано з цієї серії...'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Наприклад: 1500.50'}),
             'shop_url': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://...'}),
-            # Додали віджет для файлу
             'image': forms.FileInput(attrs={'class': 'form-control'}),
+            'currency': forms.RadioSelect(),
         }
 
 class SimpleRegistrationForm(UserCreationForm):

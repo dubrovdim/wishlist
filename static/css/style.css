@@ -8,7 +8,7 @@
     --accent-gradient: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
     --text-main: #ffffff;    
     --text-bright: #f1f5f9;  
-    --text-muted: #94a3b8;   
+    --text-muted: #ffffff;   
 }
 
 * {
@@ -144,4 +144,110 @@ a.text-muted:hover {
 .btn-copy:hover {
     background-color: rgba(255, 255, 255, 0.1);
     color: #ffffff;
+}
+
+.no-hover-card {
+    cursor: default;
+}
+
+.no-hover-card:hover {
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    box-shadow: none !important;
+}
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+input[type="number"],
+select,
+textarea {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+    color: var(--text-main) !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    border-radius: 12px;
+    padding: 10px 15px;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    color: var(--text-main) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25) !important;
+    outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: rgba(255, 255, 255, 0.35) !important;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.currency-radio-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.currency-radio-card {
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+}
+
+.currency-radio-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.currency-radio-card span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 72px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    color: var(--text-main);
+    transition: 0.2s ease;
+}
+
+.currency-radio-card:hover span {
+    background-color: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+.currency-radio-card input[type="radio"]:checked + span {
+    background: rgba(129, 140, 248, 0.18);
+    border-color: #818cf8;
+    box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.35);
+    color: #ffffff;
+}
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-text-fill-color: var(--text-main) !important;
+    -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.04) inset !important;
+    transition: background-color 9999s ease-in-out 0s;
 }

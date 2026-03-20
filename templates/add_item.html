@@ -25,6 +25,17 @@
                             <label class="form-label text-muted">Орієнтовна ціна</label>
                             {{ form.price }}
                         </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted">Валюта</label>
+                            <div class="currency-radio-group">
+                                {% for choice in form.currency %}
+                                    <label class="currency-radio-card">
+                                        {{ choice.tag }}
+                                        <span>{{ choice.choice_label }}</span>
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="mb-3">

@@ -13,6 +13,11 @@ class Wishlist(models.Model):
         return f"{self.title}, owned by {self.owner.username}"
     
 class Item(models.Model):
+    class Currency(models.TextChoices):
+        UAH = 'UAH', 'UAH'
+        USD = 'USD', 'USD'
+        EUR = 'EUR', 'EUR'
+    
     wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE, related_name='items')
 
     name = models.CharField(max_length=200, verbose_name='name')
@@ -22,7 +27,7 @@ class Item(models.Model):
     image = models.ImageField(upload_to='wishlist_images/', blank=True, null=True, verbose_name="image")
     is_reserved = models.BooleanField(default=False, verbose_name="is reserved")
     reserved_by = models.CharField(max_length=100, blank=True, null=True, verbose_name="reserved by")
-
+    currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.UAH, verbose_name="currency")
     def __str__(self):
         return self.name
 
