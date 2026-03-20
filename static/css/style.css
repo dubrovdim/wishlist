@@ -2,8 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-    --bg-dark: #0b0f1a;      /* Ще глибший темний */
-    --card-bg: #161b2a;      /* Колір картки */
+    --bg-dark: #0b0f1a; 
+    --card-bg: #161b2a;     
     --accent: #6366f1;       
     --accent-gradient: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
     --text-main: #ffffff;    

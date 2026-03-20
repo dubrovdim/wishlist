@@ -21,7 +21,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home') # Повертаємо на головну сторінку
+            return redirect('home')
     else:
         form = SimpleRegistrationForm()
     
@@ -106,7 +106,6 @@ def reserve_item(request, item_id):
     # Знаходимо конкретний подарунок
     item = get_object_or_404(Item, id=item_id)
     
-    # Якщо його вже хтось забронював раніше, просто повертаємо назад у список
     if item.is_reserved:
         return redirect('wishlist_detail', pk=item.wishlist.pk)
 
@@ -132,3 +131,25 @@ def delete_item(request, item_id):
             item.delete()
             
     return redirect('wishlist_detail', pk=wishlist_pk)
+
+@login_required
+def edit_item(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+
+    if item.wishlist.owner != request.user:
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        form = ItemForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect('wishlist_detail', pk=item.wishlist.pk)
+    else:
+        form = ItemForm(instance=item)
+
+    return render(request, 'add_item.html', {
+        'form': form,
+        'wishlist': item.wishlist,
+        'item': item,
+        'is_edit': True,
+    })

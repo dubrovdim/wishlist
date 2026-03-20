@@ -34,6 +34,9 @@
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-sm btn-outline-danger border-0" title="Видалити">🗑️</button>
                             </form>
+                            <a href="{% url 'edit_item' item.id %}" class="btn btn-outline-secondary btn-sm w-100 mb-2">
+                                Редагувати
+                            </a>
                         {% endif %}
 
                         <h5 class="card-title w-75">{{ item.name }}</h5>
