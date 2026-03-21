@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 from django.core.files.base import ContentFile
 from io import BytesIO
 from PIL import Image
+from urllib.parse import urljoin
 
 # Головна сторінка
 def home(request):
@@ -65,32 +66,42 @@ def add_item(request, pk):
             
             if item.shop_url:
                 try:
-                    headers = {
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+                    session = requests.Session()
+                    session.headers.update({
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
                         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
                         'Accept-Language': 'uk-UA,uk;q=0.9,en-US;q=0.8,en;q=0.7',
-                    }
-                    response = requests.get(item.shop_url, headers=headers, timeout=5)
-                    
+                    })
+
+                    response = session.get(item.shop_url, timeout=10, allow_redirects=True)
+
                     if response.status_code == 200:
                         soup = BeautifulSoup(response.text, 'html.parser')
                         og_image = soup.find('meta', property='og:image')
+
                         if og_image and og_image.get('content'):
-                            img_url = og_image['content']
-                            img_response = requests.get(img_url, headers=headers, timeout=5)
-                            
+                            img_url = urljoin(response.url, og_image['content'])
+
+                            img_response = session.get(
+                                img_url,
+                                headers={
+                                    'Referer': response.url,
+                                    'Accept': 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8',
+                                },
+                                timeout=10,
+                            )
+
                             if img_response.status_code == 200:
                                 img = Image.open(BytesIO(img_response.content))
-                                
+
                                 if img.mode != 'RGB':
                                     img = img.convert('RGB')
-                                    
+
                                 img.thumbnail((600, 600))
-                                
-                        
+
                                 buffer = BytesIO()
-                                img.save(buffer, format="JPEG", quality=80)
-                                    
+                                img.save(buffer, format='JPEG', quality=80)
+
                                 item.image.save('product.jpg', ContentFile(buffer.getvalue()), save=False)
                 except Exception:
                     pass

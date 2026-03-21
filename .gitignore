@@ -21,3 +21,4 @@ media/
 # Логи та системні файли
 *.log
 .DS_Store
+.bd_password
