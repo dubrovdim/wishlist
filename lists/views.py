@@ -1,15 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import SimpleRegistrationForm
+from lists.services.product_image import fetch_product_image_file
+from .forms import SimpleRegistrationForm, WishlistForm, ItemForm, ReserveItemForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from .models import Wishlist, Item
-from .forms import WishlistForm, ItemForm
-import requests
-from bs4 import BeautifulSoup
-from django.core.files.base import ContentFile
-from io import BytesIO
-from PIL import Image
-from urllib.parse import urljoin
+from django.db import transaction
+
+
 
 # Головна сторінка
 def home(request):
@@ -64,48 +61,10 @@ def add_item(request, pk):
             item = form.save(commit=False)
             item.wishlist = wishlist
             
-            if item.shop_url:
-                try:
-                    session = requests.Session()
-                    session.headers.update({
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
-                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                        'Accept-Language': 'uk-UA,uk;q=0.9,en-US;q=0.8,en;q=0.7',
-                    })
+            image_file = fetch_product_image_file(item.shop_url)
+            if image_file:
+                item.image.save(image_file.name, image_file, save=False)
 
-                    response = session.get(item.shop_url, timeout=10, allow_redirects=True)
-
-                    if response.status_code == 200:
-                        soup = BeautifulSoup(response.text, 'html.parser')
-                        og_image = soup.find('meta', property='og:image')
-
-                        if og_image and og_image.get('content'):
-                            img_url = urljoin(response.url, og_image['content'])
-
-                            img_response = session.get(
-                                img_url,
-                                headers={
-                                    'Referer': response.url,
-                                    'Accept': 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8',
-                                },
-                                timeout=10,
-                            )
-
-                            if img_response.status_code == 200:
-                                img = Image.open(BytesIO(img_response.content))
-
-                                if img.mode != 'RGB':
-                                    img = img.convert('RGB')
-
-                                img.thumbnail((600, 600))
-
-                                buffer = BytesIO()
-                                img.save(buffer, format='JPEG', quality=80)
-
-                                item.image.save('product.jpg', ContentFile(buffer.getvalue()), save=False)
-                except Exception:
-                    pass
-            
             item.save()
             return redirect('wishlist_detail', pk=pk)
     else:
@@ -114,23 +73,37 @@ def add_item(request, pk):
     return render(request, 'add_item.html', {'form': form, 'wishlist': wishlist})
 
 def reserve_item(request, item_id):
-    # Знаходимо конкретний подарунок
-    item = get_object_or_404(Item, id=item_id)
-    
+    item = get_object_or_404(Item.objects.select_related("wishlist"), id=item_id)
+
     if item.is_reserved:
-        return redirect('wishlist_detail', pk=item.wishlist.pk)
+        return redirect("wishlist_detail", pk=item.wishlist.pk)
 
-    if request.method == 'POST':
-        # Отримуємо ім'я з форми (яку ми зараз створимо)
-        reserver_name = request.POST.get('reserver_name')
-        
-        if reserver_name:
-            item.is_reserved = True
-            item.reserved_by = reserver_name
-            item.save()
-            return redirect('wishlist_detail', pk=item.wishlist.pk)
+    if request.method == "POST":
+        form = ReserveItemForm(request.POST)
+        if form.is_valid():
+            with transaction.atomic():
+                item = (
+                    Item.objects
+                    .select_related("wishlist")
+                    .select_for_update()
+                    .get(id=item_id)
+                )
 
-    return render(request, 'reserve_item.html', {'item': item})
+                if item.is_reserved:
+                    form.add_error(None, "Цей подарунок уже заброньовано.")
+                else:
+                    item.is_reserved = True
+                    item.reserved_by = form.cleaned_data["reserver_name"]
+                    item.save(update_fields=["is_reserved", "reserved_by"])
+                    return redirect("wishlist_detail", pk=item.wishlist.pk)
+    else:
+        form = ReserveItemForm()
+
+    return render(request, "reserve_item.html", {
+        "item": item,
+        "form": form,
+    })
+
 
 @login_required
 def delete_item(request, item_id):

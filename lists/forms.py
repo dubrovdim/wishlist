@@ -37,3 +37,18 @@ class SimpleRegistrationForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.help_text = ''
+
+class ReserveItemForm(forms.Form):
+    reserver_name = forms.CharField(
+        max_length=100,
+        label="Як вас звати?",
+        widget=forms.TextInput(attrs={
+            "class": "form-control",
+        }),
+    )
+
+    def clean_reserver_name(self):
+        value = self.cleaned_data["reserver_name"].strip()
+        if not value:
+            raise forms.ValidationError("Вкажіть ім'я.")
+        return value

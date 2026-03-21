@@ -5,8 +5,14 @@
     <div class="col-md-8">
         <div class="card shadow-sm">
             <div class="card-body">
-                <h3 class="card-title mb-4">Додати подарунок у список "{{ wishlist.title }}"</h3>
-                
+                <h3 class="card-title mb-4">
+                    {% if is_edit %}
+                        Редагувати подарунок у списку "{{ wishlist.title }}"
+                    {% else %}
+                        Додати подарунок у список "{{ wishlist.title }}"
+                    {% endif %}
+                </h3>
+
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     
@@ -48,7 +54,14 @@
                         {{ form.image }}
                     </div>
                     
-                    <button type="submit" class="btn btn-success">Додати подарунок</button>
+                    <button type="submit" class="btn btn-success">
+                        {% if is_edit %}
+                            Зберегти зміни
+                        {% else %}
+                            Додати подарунок
+                        {% endif %}
+                    </button>
+
                     <a href="{% url 'wishlist_detail' wishlist.pk %}" class="btn btn-link text-muted">Скасувати</a>
                 </form>
             </div>

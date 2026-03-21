@@ -2,6 +2,7 @@
 from pathlib import Path
 import os
 import dj_database_url
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -11,7 +12,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-bt48t)&6!5zek!%&_m05n-l5@uu4rucw3p!1x+yyu^lg^ar!!^'
+load_dotenv(BASE_DIR / ".env")
+SECRET_KEY = os.getenv('SECRET_KEY')
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY не встановлено в файлі .env")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'RENDER' not in os.environ
@@ -119,7 +123,7 @@ STORAGES = {
     },
 }
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dwko3z7kh',
-    'API_KEY': '182554211679238',
-    'API_SECRET': 'gRDHVHmD0uWJFTXSOJaG8cYIHFE'
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET')
 }
