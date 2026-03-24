@@ -137,3 +137,15 @@ def edit_item(request, item_id):
         'item': item,
         'is_edit': True,
     })
+
+@login_required
+def delete_wishlist(request, pk):
+    wishlist = get_object_or_404(Wishlist, pk=pk)
+    if wishlist.owner != request.user:
+        return redirect('dashboard')
+    
+    if request.method == 'POST':
+        wishlist.delete()
+        return redirect('dashboard')
+
+    return redirect('dashboard')

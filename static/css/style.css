@@ -154,6 +154,7 @@ a.text-muted:hover {
     border-color: rgba(255, 255, 255, 0.05) !important;
     box-shadow: none !important;
 }
+
 input[type="text"],
 input[type="password"],
 input[type="email"],

@@ -11,5 +11,5 @@ urlpatterns = [
     path('item/<int:item_id>/reserve/', views.reserve_item, name='reserve_item'),
     path('item/<int:item_id>/delete/', views.delete_item, name='delete_item'),
     path('item/<int:item_id>/edit/', views.edit_item, name='edit_item'),
-
+    path('list/<uuid:pk>/delete/', views.delete_wishlist, name='delete_wishlist'),
 ]
