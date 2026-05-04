@@ -5,6 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from .models import Wishlist, Item
 from django.db import transaction
+from django.db.models import F
 
 
 
@@ -47,7 +48,19 @@ def create_wishlist(request):
 
 def wishlist_detail(request, pk):
     wishlist = get_object_or_404(Wishlist, pk=pk)
-    return render(request, 'wishlist_detail.html', {'wishlist': wishlist})
+    sort = request.GET.get('sort')
+    items = wishlist.items.all()
+
+    if sort == 'price_asc':
+        items = items.order_by(F('price').asc(nulls_last=True), 'name')
+    elif sort == 'price_desc':
+        items = items.order_by(F('price').desc(nulls_last=True), 'name')
+
+    return render(request, 'wishlist_detail.html', {
+        'wishlist': wishlist,
+        'items': items,
+        'sort': sort,
+    })
 
 @login_required
 def add_item(request, pk):
